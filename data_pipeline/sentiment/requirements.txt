@@ -1,0 +1,4 @@
+pymongo
+newsapi-python
+dotenv-python
+apache-airflow-providers-mongo==3.0.0
