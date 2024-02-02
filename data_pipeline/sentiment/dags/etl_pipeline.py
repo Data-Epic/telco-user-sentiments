@@ -17,7 +17,7 @@ def etl_news_data_into_new_mongodb():
             hook = MongoHook(mongo_conn_id="mongo_default")
             client = hook.get_conn()
             db = client.trending_data
-            collection = db.cleaned_electric_vehicle
+            collection = db.raw_electric_vehicle
             documents = list(collection.find({}, {'_id': 0}))
             values = [document for document in documents]
             logging.info(f"Extracted {len(documents)} documents from MongoDB")
@@ -62,7 +62,7 @@ def etl_news_data_into_new_mongodb():
             hook = MongoHook(mongo_conn_id="mongo_default")
             client = hook.get_conn()
             db = client.trending_data
-            collection = db.cleaned_electric_ve
+            collection = db.cleaned_electric_vehicle
             logging.info(f"Connected to MongoDB - {client.server_info()}")
 
             for article in transformed_documents:
