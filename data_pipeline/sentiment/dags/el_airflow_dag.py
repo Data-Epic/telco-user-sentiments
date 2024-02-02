@@ -5,6 +5,9 @@ import logging
 import time
 from newsapi import NewsApiClient
 from airflow.providers.mongo.hooks.mongo import MongoHook
+from datetime import datetime, timedelta
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
+
 
 @dag(
     schedule_interval=None,
@@ -15,7 +18,7 @@ from airflow.providers.mongo.hooks.mongo import MongoHook
 def el_news_data_into_mongodb():
     @task
     def extract_from_newsapi(q, from_param, to, language, pages):
-        
+
         newsapi = NewsApiClient(api_key='188877b9bd2741479357336cdb5bc761')
         all_articles = []
         for page in range(pages, pages + 4):
@@ -46,8 +49,15 @@ def el_news_data_into_mongodb():
         except Exception as e:
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
-    all_articles = extract_from_newsapi("tesla", "2024-01-01", "2024-01-29", "en", 1)
+    trigger = TriggerDagRunOperator(
+        task_id='triggers_the_etl_pipeline',
+        trigger_dag_id='etl_news_data_into_new_mongodb',
+        wait_for_completion=True)
+
+    all_articles = extract_from_newsapi("tesla", datetime.today().date() - timedelta(days=1), datetime.today().date(),
+                                        "en", 1)
     load_raw_data(all_articles)
+    trigger
 
 
 el_raw_collection_dag_mongodb = el_news_data_into_mongodb()
