@@ -52,6 +52,6 @@ def el_news_data_into_mongodb():
     all_articles = extract_from_newsapi("tesla", datetime.today().date() - timedelta(days=1), datetime.today().date(),
                                         "en", 1)
     load_raw_data(all_articles)
-
+    
 
 el_raw_collection_dag_mongodb = el_news_data_into_mongodb()

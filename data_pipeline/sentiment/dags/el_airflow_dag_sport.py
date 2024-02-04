@@ -6,13 +6,14 @@ import time
 from newsapi import NewsApiClient
 from airflow.providers.mongo.hooks.mongo import MongoHook
 from datetime import datetime, timedelta
-
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 @dag(
     schedule_interval=None,
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     catchup=False,
     tags=['Loading raw sport data into Airflow'],
 )
+
 def el_sport_data_into_mongodb():
     @task
     def extract_from_newsapi(q, from_param, to, language, pages):
@@ -48,7 +49,7 @@ def el_sport_data_into_mongodb():
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
 
-    all_articles = extract_from_newsapi("Formula 1", datetime.today().date() - timedelta(days=30), datetime.today().date(),
+    all_articles = extract_from_newsapi("World cups", datetime.today().date() - timedelta(days=1), datetime.today().date(),
                                         "en", 1)
     load_raw_data(all_articles)
 

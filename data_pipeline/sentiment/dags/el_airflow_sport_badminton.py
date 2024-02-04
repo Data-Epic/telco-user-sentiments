@@ -6,20 +6,19 @@ import time
 from newsapi import NewsApiClient
 from airflow.providers.mongo.hooks.mongo import MongoHook
 from datetime import datetime, timedelta
-
-
-
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 @dag(
     schedule_interval=None,
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     catchup=False,
-    tags=['Loading Raw Cryptocurrency data into Airflow'],
+    tags=[f'Loading raw sport badminton data into Airflow'],
 )
-def el_crypto_data_into_mongodb():
+
+def el_sport_badminton_data_into_mongodb():
     @task
     def extract_from_newsapi(q, from_param, to, language, pages):
 
-        newsapi = NewsApiClient(api_key='c97ca9d350d145d5974be1fa9c52afb2')
+        newsapi = NewsApiClient(api_key='188877b9bd2741479357336cdb5bc761')
         all_articles = []
         for page in range(pages, pages + 5):
             response = newsapi.get_everything(q=q,
@@ -41,7 +40,7 @@ def el_crypto_data_into_mongodb():
             hook = MongoHook(mongo_conn_id="mongo_default")
             client = hook.get_conn()
             db = client.trending_data
-            collection = db.raw_cryptocurrency
+            collection = db.raw_sport
             logging.info(f"Connected to MongoDB - {client.server_info()}")
             for article in all_articles:
                 collection.insert_many(article)
@@ -50,8 +49,8 @@ def el_crypto_data_into_mongodb():
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
 
-    all_articles = extract_from_newsapi("Stellar", datetime.today().date() - timedelta(days=1), datetime.today().date(),
+    all_articles = extract_from_newsapi("badminton", datetime.today().date() - timedelta(days=1), datetime.today().date(),
                                         "en", 1)
     load_raw_data(all_articles)
 
-el_crypto_data_into_mongodb()
+el_sport_badminton_data_into_mongodb()

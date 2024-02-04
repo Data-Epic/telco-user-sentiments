@@ -78,4 +78,4 @@ def etl_crypto_data_into_new_mongodb():
     transformed_documents = transform_data(documents)
     load_raw_data(transformed_documents)
 
-el_news_data_into_mongodb_dag = etl_crypto_data_into_new_mongodb()
+etl_crypto_data_into_new_mongodb()
