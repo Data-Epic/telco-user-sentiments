@@ -1,0 +1,4 @@
+dag_id: 'ford'
+schedule_interval: '@daily'
+catchup: False
+input: 'Ford Mustang Mach-E'

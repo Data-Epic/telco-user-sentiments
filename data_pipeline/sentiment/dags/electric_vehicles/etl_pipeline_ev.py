@@ -8,17 +8,16 @@ import polars as pl
     schedule_interval="@daily",
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     catchup=False,
-    tags=['Loading cleaned crypto data into Airflow'],
+    tags=['Loading cleaned ev data into Airflow'],
 )
-def etl_crypto_data_into_new_mongodb():
-
+def etl_ev_data_into_new_mongodb():
     @task
-    def extract_crypto_data_from_mongodb():
+    def extract_ev_data_from_mongodb():
         try:
             hook = MongoHook(mongo_conn_id="mongo_default")
             client = hook.get_conn()
             db = client.trending_data
-            collection = db.raw_cryptocurrency
+            collection = db.raw_electric_vehicle
             documents = list(collection.find({}, {'_id': 0}))
             values = [document for document in documents]
             logging.info(f"Extracted {len(documents)} documents from MongoDB")
@@ -63,7 +62,7 @@ def etl_crypto_data_into_new_mongodb():
             hook = MongoHook(mongo_conn_id="mongo_default")
             client = hook.get_conn()
             db = client.trending_data
-            collection = db.cleaned_cryptocurrency
+            collection = db.cleaned_electric_vehicle
             logging.info(f"Connected to MongoDB - {client.server_info()}")
 
             for article in transformed_documents:
@@ -74,8 +73,8 @@ def etl_crypto_data_into_new_mongodb():
         except Exception as e:
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
-    documents = extract_crypto_data_from_mongodb()
+    documents = extract_ev_data_from_mongodb()
     transformed_documents = transform_data(documents)
     load_raw_data(transformed_documents)
 
-etl_crypto_data_into_new_mongodb()
+etl_ev_data_into_new_mongodb()

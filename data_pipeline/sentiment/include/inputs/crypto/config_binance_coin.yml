@@ -1,0 +1,4 @@
+dag_id: 'binance_coin'
+schedule_interval: '@daily'
+catchup: False
+input: 'Binance Coin'

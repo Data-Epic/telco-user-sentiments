@@ -1,0 +1,4 @@
+dag_id: 'nissan_leaf'
+schedule_interval: '@daily'
+catchup: False
+input: 'Nissan Leaf'

@@ -11,14 +11,14 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
     schedule_interval=None,
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     catchup=False,
-    tags=[f'Loading raw sport {{dag_id}} data into Airflow'],
+    tags=[f'Loading raw sport dogecoin data into Airflow'],
 )
 
-def el_electric_{{dag_id}}_data_into_mongodb():
+def el_crypto_dogecoin_data_into_mongodb():
     @task
     def extract_from_newsapi(q, from_param, to, language, pages):
 
-        newsapi = NewsApiClient(api_key='4e5ef1ac63bc437eafaad4a91430b725')
+        newsapi = NewsApiClient(api_key='c97ca9d350d145d5974be1fa9c52afb2')
         all_articles = []
         for page in range(pages, pages + 5):
             response = newsapi.get_everything(q=q,
@@ -49,8 +49,8 @@ def el_electric_{{dag_id}}_data_into_mongodb():
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
 
-    all_articles = extract_from_newsapi("{{input}}", datetime.today().date() - timedelta(days=1), datetime.today().date(),
+    all_articles = extract_from_newsapi("Dogecoin", datetime.today().date() - timedelta(days=1), datetime.today().date(),
                                         "en", 1)
     load_raw_data(all_articles)
 
-el_electric_{{dag_id}}_data_into_mongodb()
+el_crypto_dogecoin_data_into_mongodb()

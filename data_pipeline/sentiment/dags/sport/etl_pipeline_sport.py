@@ -12,7 +12,7 @@ import polars as pl
 )
 def etl_sport_data_into_new_mongodb():
     @task
-    def extract_crypto_data_from_mongodb():
+    def extract_sport_data_from_mongodb():
         try:
             hook = MongoHook(mongo_conn_id="mongo_default")
             client = hook.get_conn()
@@ -73,7 +73,7 @@ def etl_sport_data_into_new_mongodb():
         except Exception as e:
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
-    documents = extract_crypto_data_from_mongodb()
+    documents = extract_sport_data_from_mongodb()
     transformed_documents = transform_data(documents)
     load_raw_data(transformed_documents)
 

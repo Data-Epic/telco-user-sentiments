@@ -1,0 +1,4 @@
+dag_id: 'dogecoin'
+schedule_interval: '@daily'
+catchup: False
+input: 'Dogecoin'

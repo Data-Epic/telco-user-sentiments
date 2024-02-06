@@ -11,10 +11,10 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
     schedule_interval=None,
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     catchup=False,
-    tags=[f'Loading raw sport {{dag_id}} data into Airflow'],
+    tags=[f'Loading raw sport hyundai_kona data into Airflow'],
 )
 
-def el_electric_{{dag_id}}_data_into_mongodb():
+def el_electric_hyundai_kona_data_into_mongodb():
     @task
     def extract_from_newsapi(q, from_param, to, language, pages):
 
@@ -49,8 +49,8 @@ def el_electric_{{dag_id}}_data_into_mongodb():
             logging.error(f"Error connecting to or inserting into MongoDB: {e}")
 
 
-    all_articles = extract_from_newsapi("{{input}}", datetime.today().date() - timedelta(days=1), datetime.today().date(),
+    all_articles = extract_from_newsapi("Hyundai Kona", datetime.today().date() - timedelta(days=1), datetime.today().date(),
                                         "en", 1)
     load_raw_data(all_articles)
 
-el_electric_{{dag_id}}_data_into_mongodb()
+el_electric_hyundai_kona_data_into_mongodb()
