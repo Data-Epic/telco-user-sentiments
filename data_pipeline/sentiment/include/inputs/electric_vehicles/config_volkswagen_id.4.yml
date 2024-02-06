@@ -1,0 +1,4 @@
+dag_id: 'lucid_air'
+schedule_interval: '@daily'
+catchup: False
+input: 'Lucid Air'

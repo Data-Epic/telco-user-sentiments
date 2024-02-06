@@ -1,0 +1,4 @@
+dag_id: 'kia_niro'
+schedule_interval: '@daily'
+catchup: False
+input: 'Kia Niro'

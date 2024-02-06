@@ -1,0 +1,4 @@
+dag_id: 'audi_etron'
+schedule_interval: '@daily'
+catchup: False
+input: 'Audi e-tron'

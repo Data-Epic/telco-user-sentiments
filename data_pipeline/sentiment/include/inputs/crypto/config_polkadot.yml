@@ -1,0 +1,4 @@
+dag_id: 'polkadot'
+schedule_interval: '@daily'
+catchup: False
+input: 'Polkadot'

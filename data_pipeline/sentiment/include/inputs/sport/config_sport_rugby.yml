@@ -1,0 +1,4 @@
+dag_id: 'rugby'
+schedule_interval: '@daily'
+catchup: False
+input: 'Rugby'

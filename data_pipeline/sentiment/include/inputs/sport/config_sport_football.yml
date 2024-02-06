@@ -1,0 +1,4 @@
+dag_id: 'football'
+schedule_interval: '@daily'
+catchup: False
+input: 'football'
